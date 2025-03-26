@@ -14,19 +14,21 @@ class Translator {
         const textArray = text.split(" ");
 
         textArray.forEach((word, index) => {
-            if(word.includes(":")) {
+            const lowerWord = word.toLowerCase()
+            if(/(?<=\d+):(?=\d+)/g.test(word)) {
                 textArray[index] = `<span class="highlight">${word.replace(/(?<=\d+):(?=\d+)/g, ".")}</span>`
             }
-            if(Object.keys(americanOnly).includes(word)) {
-                textArray[index] = `<span class="highlight">${americanOnly[word]}</span>`
+            if(Object.keys(americanOnly).includes(lowerWord)) {
+                textArray[index] = `<span class="highlight">${americanOnly[lowerWord]}</span>`
             }
-            if(Object.keys(americanToBritishSpelling).includes(word)) {
-                textArray[index] = `<span class="highlight">${americanToBritishSpelling[word]}</span>`
+            if(Object.keys(americanToBritishSpelling).includes(lowerWord)) {
+                textArray[index] = `<span class="highlight">${americanToBritishSpelling[lowerWord]}</span>`
             }
-            if(Object.keys(americanToBritishTitles).includes(word.toLowerCase())) {
-                textArray[index] = `<span class="highlight">${Translator.toTitleCase(americanToBritishTitles[word.toLowerCase()])}</span>`
+            if(Object.keys(americanToBritishTitles).includes(lowerWord)) {
+                textArray[index] = `<span class="highlight">${Translator.toTitleCase(americanToBritishTitles[lowerWord])}</span>`
             }
         })
+        
         if(textArray.join(" ") === text) return "Everything looks good to me!"
         return textArray.join(" ")
     }
@@ -35,21 +37,23 @@ class Translator {
         const textArray = text.split(" ");
 
         textArray.forEach((word, index) => {
-            if(word.includes(".")) {
-                // used positive lookbehind and lookahead to makesure
-                //  we are modifying the hour not the sentence ending `.`
+            const lowerWord = word.toLowerCase()
+            // used positive lookbehind and lookahead to makesure
+            //  we are modifying the hour not the sentence ending `.`
+            if(/(?<=\d+)\.(?=\d+)/g.test(word)) {
                 textArray[index] = `<span class="highlight">${word.replace(/(?<=\d+)\.(?=\d+)/g, ":")}</span>`
             }
-            if(Object.keys(britishOnly).includes(word)) {
-                textArray[index] = `<span class="highlight">${britishOnly[word]}</span>`
+            if(Object.keys(britishOnly).includes(lowerWord)) {
+                textArray[index] = `<span class="highlight">${britishOnly[lowerWord]}</span>`
             }
-            if(Object.values(americanToBritishSpelling).includes(word)) {
-                textArray[index] = `<span class="highlight">${Object.keys(americanToBritishSpelling).find(key => americanToBritishSpelling[key] == word)}</span>`
+            if(Object.values(americanToBritishSpelling).includes(lowerWord)) {
+                textArray[index] = `<span class="highlight">${Object.keys(americanToBritishSpelling).find(key => americanToBritishSpelling[key] == lowerWord)}</span>`
             }
-            if(Object.values(americanToBritishTitles).includes(word.toLowerCase())) {
-                textArray[index] = `<span class="highlight">${Translator.toTitleCase(Object.keys(americanToBritishTitles).find(key => americanToBritishTitles[key] == word.toLowerCase()))}</span>`
+            if(Object.values(americanToBritishTitles).includes(lowerWord)) {
+                textArray[index] = `<span class="highlight">${Translator.toTitleCase(Object.keys(americanToBritishTitles).find(key => americanToBritishTitles[key] == lowerWord))}</span>`
             }
         })
+
         if(textArray.join(" ") === text) return "Everything looks good to me!"
         return textArray.join(" ")
     }
