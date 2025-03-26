@@ -15,7 +15,7 @@ class Translator {
 
         textArray.forEach((word, index) => {
             if(word.includes(":")) {
-                textArray[index] = `<span class="highlight">${word.replace(/:/, ".")}</span>`
+                textArray[index] = `<span class="highlight">${word.replace(/(?<=\d+):(?=\d+)/g, ".")}</span>`
             }
             if(Object.keys(americanOnly).includes(word)) {
                 textArray[index] = `<span class="highlight">${americanOnly[word]}</span>`
@@ -36,7 +36,9 @@ class Translator {
 
         textArray.forEach((word, index) => {
             if(word.includes(".")) {
-                textArray[index] = `<span class="highlight">${word.replace(/\./, ":")}</span>`
+                // used positive lookbehind and lookahead to makesure
+                //  we are modifying the hour not the sentence ending `.`
+                textArray[index] = `<span class="highlight">${word.replace(/(?<=\d+)\.(?=\d+)/g, ":")}</span>`
             }
             if(Object.keys(britishOnly).includes(word)) {
                 textArray[index] = `<span class="highlight">${britishOnly[word]}</span>`
