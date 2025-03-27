@@ -23,7 +23,6 @@ module.exports = function (app) {
       }
 
       const translation = (locale === "american-to-british") ? americanToBritish(text) : britishToAmerican(text)
-      console.log({ text, translation})
       return res.json({ text, translation})
     });
 };
